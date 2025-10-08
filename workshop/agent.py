@@ -54,11 +54,6 @@ while True:
         content=user_input
     )
 
-    run = project_client.agents.runs.create_and_process(  
-        thread_id=thread.id, 
-        agent_id=agent.id
-    )
-
 #Fetch All Messages from the Thread
 while True:
 
@@ -75,16 +70,20 @@ while True:
         role=MessageRole.USER, 
         content=user_input
     )
-
     run = project_client.agents.runs.create_and_process(
         thread_id=thread.id, 
         agent_id=agent.id
-    )    
+    ) 
 
     messages = project_client.agents.messages.list(thread_id=thread.id)  
     first_message = next(iter(messages), None) 
     if first_message: 
         print(next((item["text"]["value"] for item in first_message.content if item.get("type") == "text"), ""))
+
+run = project_client.agents.runs.create_and_process(  
+        thread_id=thread.id, 
+        agent_id=agent.id
+    )
 
 project_client.agents.delete_agent(agent.id)
 print("Deleted agent")
